@@ -4,16 +4,18 @@
   "description": "Testing framework for visual testing",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config ./config/jest.config.js --forceExit --detectOpenHandles",
-    "update-snapshot": "jest --config ./config/jest.config.js --forceExit --detectOpenHandles -u"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --config ./config/jest.config.js --forceExit --detectOpenHandles",
+    "update-snapshot": "node --experimental-vm-modules node_modules/.bin/jest --config ./config/jest.config.js --forceExit --detectOpenHandles -u"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@playwright/test": "*",
+    "axios": "*",
     "jest": "*",
     "jest-environment-node": "*",
     "jest-image-snapshot": "*",
+    "pg": "*",
     "playwright": "*",
     "properties-reader": "*",
     "webdriverio": "*"

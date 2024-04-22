@@ -1,0 +1,18 @@
+{
+    "loginCTA" : {
+        "xpath" : "//*[text()='Login']"
+    },
+    "getOTPCTA" : {
+        "xpath" : "//*[text()='Log in']"
+    },
+    "otpSentText" : {
+        "xpath" : "//*[contains(text(),'sent to $')]"
+    },
+    "otpInput" : {
+        "xpath" : "(//input)[$]"
+    },
+    "mobileNumberInput" : {
+        "xpath" : "//*[@type='number']"
+    }
+    
+}
