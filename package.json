@@ -1,0 +1,21 @@
+{
+  "name": "visual-beast",
+  "version": "1.0.0",
+  "description": "Testing framework for visual testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --config ./config/jest.config.js --forceExit --detectOpenHandles",
+    "update-snapshot": "jest --config ./config/jest.config.js --forceExit --detectOpenHandles -u"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@playwright/test": "*",
+    "jest": "*",
+    "jest-environment-node": "*",
+    "jest-image-snapshot": "*",
+    "playwright": "*",
+    "properties-reader": "*",
+    "webdriverio": "*"
+  }
+}

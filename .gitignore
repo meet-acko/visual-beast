@@ -128,3 +128,13 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+allure-results/*
+allure-report/*
+report.xml
+package-lock.json
+**/*.png
+*.txt
+*.html
+*.apk
+.DS_Store
