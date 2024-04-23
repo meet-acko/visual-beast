@@ -16,7 +16,9 @@ exports.getDriver = async function getDriver(){
                             return await chromium.launch({ headless: true });
                         }
                     }
-                    break;
+                }
+                case "api" : {
+                    return;
                 }
             }
             break;
@@ -43,7 +45,9 @@ exports.getDriver = async function getDriver(){
                             });
                         }
                     }
-                    break;
+                }
+                case "api" : {
+                    return;
                 }
             }
             break;

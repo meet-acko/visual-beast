@@ -3,6 +3,8 @@ const fs = require("fs");
 const path = require('path');
 const { Pool } = require("pg");
 const { properties } = require("./config");
+const { parse } = require('csv-parse');
+const stringify = require('csv-stringify');
 let driver;
 
 exports.Helper = class Helper{
@@ -163,5 +165,70 @@ exports.Helper = class Helper{
                         return await driver.elementClick(element);
                 }
         }
+    }
+
+    async readCSVFile(csvFilePath){
+        try {
+            let records = [];
+            let parser = await fs.createReadStream(csvFilePath).pipe(parse({
+                    columns: true, // Parse columns as properties of an object
+                    trim: true, // Trim leading and trailing spaces in columns
+                    skip_empty_lines: true
+                }));
+            for await (let record of await parser) {
+                await records.push(record);
+            }
+            return await records;
+        }catch(error){
+            await console.error('Error during CSV parsing:', error);
+        }
+    }
+
+    async writeCSVFile(csvFilePath, data){
+        // sample data = [
+        // { name: 'John Doe', age: 30, city: 'New York' },
+        // { name: 'Jane Smith', age: 25, city: 'Los Angeles' }
+        // ];
+        const output = await fs.createWriteStream(csvFilePath);
+        const stringifier = await stringify({
+            header: true, // Include column headers as the first line
+            // columns: { name: 'NAME', age: 'AGE', city: 'CITY' }, // Map object keys to column headers
+        });
+        await stringifier.pipe(output);
+        await data.forEach(item => {
+            stringifier.write(item);
+        });
+        await stringifier.end();
+        await output.on('finish', () => {
+            console.log('CSV file has been written successfully.');
+        });
+    }
+
+    async setUrl(url){
+        switch(properties.configType){
+            case "web":{
+                await driver.url(url)
+                return;
+            }
+            case "mweb":{
+                await driver.url(url)
+                return;
+            }
+            case "android":{
+                await driver.navigateTo(url);
+                return;
+            }
+            default:
+                await driver.navigateTo(url);
+                return;
+        }
+    }
+
+    async takeFullPageScreenshot(){
+        let bodyHeight = await driver.executeScript("return document.body.scrollHeight",[]);
+        // let bodywidth = await driver.executeScript("return document.body.scrollWidth",[]);
+        await driver.setWindowSize(1100, bodyHeight)
+        await this.sleep(1);
+        return await driver.takeScreenshot();
     }
 }

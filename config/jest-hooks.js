@@ -18,18 +18,20 @@ beforeAll(async function() {
 });
 
 beforeEach(async () => {
-    switch (properties.driverType) {
-        case "playwright" : {
-            driver = await getDriver();
-            await Helper.setDriver(await driver);
-            await Helper.setPage(await driver.newPage());
-            break;
-        }
-        case "webdriverio" : {
-            driver = await getDriver();
-            await Helper.setDriver(await driver);
-            await driver.url("https://www.ackodev.com/");
-            break;
+    if(properties.configType == "web"){
+        switch (properties.driverType) {
+            case "playwright" : {
+                driver = await getDriver();
+                await Helper.setDriver(await driver);
+                await Helper.setPage(await driver.newPage());
+                break;
+            }
+            case "webdriverio" : {
+                driver = await getDriver();
+                await Helper.setDriver(await driver);
+                await driver.url("https://www.ackodev.com/");
+                break;
+            }
         }
     }
 });

@@ -1,4 +1,3 @@
-const { driver } = require("../config/jest-setup");
 const BasePage = require("../pages/base.page");
 const HomePage = require("../pages/home.page");
 const RetailPage = require("../pages/retail.page");
