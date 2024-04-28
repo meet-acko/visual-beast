@@ -9,7 +9,7 @@ describe('Ackodev visual testing', () => {
         await pages.landingPage.visualTestForLandingPages("Acko URLs");
     },50000);
 
-    // it.only('all landing pages visual testing from csv reading using playwright', async () => {
-    //     await pages.landingPage.visualTestForLandingPagesUsingPlaywright("Acko URLs");
-    // });
+    it.only('all landing pages visual testing from csv reading using playwright', async () => {
+        await pages.landingPage.visualTestForLandingPagesUsingPlaywright("Acko URLs");
+    });
 });

@@ -20,6 +20,7 @@ class LandingPage extends Helper{
             let page = await Helper.getPage();
             await page.goto(await landingPagesData[i][columnName]);
             await this.takeVisualSnapshot();
+            await this.takeHTMLSnapshot();
         }
     }
 

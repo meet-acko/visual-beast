@@ -6,6 +6,8 @@ const { properties } = require("./config");
 const { parse } = require('csv-parse');
 const stringify = require('csv-stringify');
 const SoftAssert = require("./softAssert");
+const cheerio = require('cheerio');
+
 let driver;
 
 exports.Helper = class Helper{
@@ -294,7 +296,12 @@ exports.Helper = class Helper{
     }
 
     async takeHTMLSnapshot(){
-        let $ = await cheerio.load(await driver.getPageSource());
+        let $;
+        if(properties.driverType == "webdriverio"){
+            $ = await cheerio.load(await driver.getPageSource());
+        }else{
+            $ = await cheerio.load(await (await Helper.getPage()).content());
+        }
         // removing all unwanted html code
         await $('script').remove(); 
         await $('[src]').removeAttr('src');
@@ -303,7 +310,7 @@ exports.Helper = class Helper{
         await $('[class]').removeAttr('class');
         await $('[id]').removeAttr('id');
         // await $('div').remove();
-        // await expect((await $.html()).replace(/\s+/g, ' ').trim()).toMatchSnapshot();
+        await Helper.softAssert.assertHTML((await $.html()).replace(/\s+/g, ' ').trim());
     }
 
     async scrollToBottomOfWebPage(){

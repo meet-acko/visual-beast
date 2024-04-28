@@ -22,6 +22,14 @@ class SoftAssert {
         }
     }
 
+    async assertHTML(pageSource){
+        try {
+            await expect(await pageSource).toMatchSnapshot();
+        } catch (error) {
+            await this.errors.push(error);
+        }
+    }
+
     async assertImageInPlaywright(page) {
         try {
             await playwright.expect(await page).toHaveScreenshot({ fullPage: true });
