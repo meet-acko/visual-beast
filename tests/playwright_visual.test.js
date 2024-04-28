@@ -9,5 +9,8 @@ const pages = {
 // npx playwright test tests/playwright_visual.test.js --config=config/playwright.config.js
 
 test('homepage visual test', async ({ page }, testInfo) => {
-    await pages.landingPage.visualTestForLandingPagesInPlaywright("Acko URLs", await page);
-});
+    await page.goto('https://www.acko.com/two-wheeler-insurance/');
+    await expect(page).toHaveScreenshot({ fullPage: true, maxDiffPixels: 100 });
+    await page.goto('https://www.ackodev.com/two-wheeler-insurance/');
+    await expect(page).toHaveScreenshot({ fullPage: true, maxDiffPixels: 100 });
+}); 
