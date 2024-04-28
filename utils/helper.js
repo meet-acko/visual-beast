@@ -5,10 +5,12 @@ const { Pool } = require("pg");
 const { properties } = require("./config");
 const { parse } = require('csv-parse');
 const stringify = require('csv-stringify');
+const SoftAssert = require("./softAssert");
 let driver;
 
 exports.Helper = class Helper{
     static page;
+    static softAssert = new SoftAssert();
 
     constructor(file){
         if(file){
@@ -36,6 +38,10 @@ exports.Helper = class Helper{
 
     static async getPage(){
         return await this.page;
+    }
+
+    static async verifySoftAssert(){
+        await Helper.softAssert.verify();
     }
 
     async sleep(second) {
@@ -225,10 +231,69 @@ exports.Helper = class Helper{
     }
 
     async takeFullPageScreenshot(){
+        await driver.executeScript(`function smoothScrollToBottom() {
+            const totalHeight = document.body.scrollHeight;
+            let currentScroll = window.scrollY || window.pageYOffset;
+            const scrollStep = 50;
+            const scrollDelay = 25;
+        
+            function scrollDown() {
+                if (currentScroll < totalHeight - window.innerHeight) {
+                    currentScroll += scrollStep;
+                    window.scrollTo(0, currentScroll);
+                    setTimeout(scrollDown, scrollDelay);
+                } else {
+                    window.scrollTo(0, totalHeight);
+                }
+            }
+            scrollDown();
+        }
+        smoothScrollToBottom();`,[])
+        
         let bodyHeight = await driver.executeScript("return document.body.scrollHeight",[]);
-        // let bodywidth = await driver.executeScript("return document.body.scrollWidth",[]);
-        await driver.setWindowSize(1100, bodyHeight)
-        await this.sleep(1);
+        await this.sleep((await bodyHeight)/2000);
+        let bodywidth = await driver.executeScript("return document.body.scrollWidth",[]);
+        await driver.setWindowSize(bodywidth, bodyHeight)
+        await this.sleep(2);
         return await driver.takeScreenshot();
+    }
+
+    async takeFullPagePlaywrightScreenshot(){
+        let pageObj = await Helper.getPage();
+        await pageObj.evaluate(() => {
+            const totalHeight = document.body.scrollHeight;
+            let currentScroll = window.scrollY || window.pageYOffset;
+            const scrollStep = 50;
+            const scrollDelay = 25;
+        
+            function scrollDown() {
+                if (currentScroll < totalHeight - window.innerHeight) {
+                    currentScroll += scrollStep;
+                    window.scrollTo(0, currentScroll);
+                    setTimeout(scrollDown, scrollDelay);
+                } else {
+                    window.scrollTo(0, totalHeight);
+                }
+            }
+            scrollDown();
+        })
+        
+        let bodyHeight = await pageObj.evaluate(()=>{return document.body.scrollHeight});
+        await this.sleep((await bodyHeight)/2000);
+        await pageObj.waitForLoadState('networkidle');
+        return await pageObj.screenshot({ fullPage: true });
+    }
+
+    async takeVisualSnapshot(){
+        let image;
+        if(properties.driverType == "webdriverio")
+            image = await this.takeFullPageScreenshot();
+        else if(properties.driverType == "playwright")
+            image = await this.takeFullPagePlaywrightScreenshot();
+        await Helper.softAssert.assertImage(await image);
+    }
+
+    async scrollToBottomOfWebPage(){
+        await driver.executeScript("return window.scrollTo(0, document.body.scrollHeight)",[]);
     }
 }

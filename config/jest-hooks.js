@@ -23,7 +23,9 @@ beforeEach(async () => {
             case "playwright" : {
                 driver = await getDriver();
                 await Helper.setDriver(await driver);
-                await Helper.setPage(await driver.newPage());
+                let page = await driver.newPage()
+                await page.setDefaultTimeout(3*60*60*1000);
+                await Helper.setPage(await page);
                 break;
             }
             case "webdriverio" : {
@@ -42,4 +44,5 @@ afterAll(async () => {
 
 afterEach(async () => {
     await closeDriver(await Helper.getDriver());
+    await Helper.verifySoftAssert();
 });

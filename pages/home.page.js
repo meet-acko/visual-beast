@@ -31,7 +31,7 @@ class HomePage extends Helper{
     }
 
     async webLoginPlaywright(mobileNumber){
-        const page = await Helper.getPage();
+        let page = await Helper.getPage();
         await page.goto('https://www.ackodev.com/');
         await page.locator("//*[text()='Login']").first().click();
         await this.sleep(1);

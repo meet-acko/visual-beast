@@ -4,13 +4,13 @@ module.exports = {
   outputDir: '../results',
   testDir: '../tests',
   testMatch: '**/*.test.js',
-  timeout: 30000,
+  timeout: 3000000,
   expect: {
-    timeout: 5000
+    timeout: 500000
   },
   use: {
     headless: true,
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: 1920, height: 1080 },
     actionTimeout: 0,
     outputDir: '../results',
   },

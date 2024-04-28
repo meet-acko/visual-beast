@@ -10,10 +10,10 @@ exports.getDriver = async function getDriver(){
                 case "web" : {
                     switch (properties.executionMode) {
                         case "headed" : {
-                            return await chromium.launch({ headless: false, args: ['--start-maximized'] });
+                            return await chromium.launch({ headless: false, args: ['--window-size=1920,1080'] });
                         }
                         case "headless" : {
-                            return await chromium.launch({ headless: true });
+                            return await chromium.launch({ headless: true, args: ['--window-size=1920,1080'] });
                         }
                     }
                 }
@@ -30,7 +30,10 @@ exports.getDriver = async function getDriver(){
                         case "headed" : {
                             return await remote({
                                 capabilities: {
-                                    browserName: 'chrome'
+                                    browserName: 'chrome',
+                                    'goog:chromeOptions': {
+                                        args: ['--window-size=1920,1080']  // Start Chrome maximized
+                                    }
                                 }
                             });
                         }
@@ -39,7 +42,7 @@ exports.getDriver = async function getDriver(){
                                 capabilities: {
                                     browserName: 'chrome',
                                     'goog:chromeOptions': {
-                                        args: ['--headless']
+                                        args: ['--headless', '--window-size=1920,1080']
                                     }
                                 }
                             });
