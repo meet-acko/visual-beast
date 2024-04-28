@@ -293,6 +293,19 @@ exports.Helper = class Helper{
         await Helper.softAssert.assertImage(await image);
     }
 
+    async takeHTMLSnapshot(){
+        let $ = await cheerio.load(await driver.getPageSource());
+        // removing all unwanted html code
+        await $('script').remove(); 
+        await $('[src]').removeAttr('src');
+        await $('style').remove();
+        await $('noscript').remove();
+        await $('[class]').removeAttr('class');
+        await $('[id]').removeAttr('id');
+        // await $('div').remove();
+        // await expect((await $.html()).replace(/\s+/g, ' ').trim()).toMatchSnapshot();
+    }
+
     async scrollToBottomOfWebPage(){
         await driver.executeScript("return window.scrollTo(0, document.body.scrollHeight)",[]);
     }
