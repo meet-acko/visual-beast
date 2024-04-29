@@ -23,4 +23,7 @@ exports.properties = {
     androidBuildPath : process.env.androidBuildPath ? process.env.androidBuildPath : properties.get("androidBuildPath"),
     chromeDriverExecutablePath : process.env.chromeDriverExecutablePath ? process.env.chromeDriverExecutablePath : properties.get("chromeDriverExecutablePath"),
     chromeDriverMappingFilePath : process.env.chromeDriverMappingFilePath ? process.env.chromeDriverMappingFilePath : properties.get("chromeDriverMappingFilePath"),
+
+    strapiMigrationCsvFilePath :process.env.strapiMigrationCsvFilePath ? process.env.strapiMigrationCsvFilePath : properties.get("strapiMigrationCsvFilePath"),
+    ackoLandingPageVisualTestingColumnName : process.env.ackoLandingPageVisualTestingColumnName ? process.env.ackoLandingPageVisualTestingColumnName : properties.get("ackoLandingPageVisualTestingColumnName"),
 };

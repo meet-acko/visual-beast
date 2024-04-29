@@ -1,3 +1,4 @@
+const { properties } = require("../utils/config");
 const { Helper } = require("../utils/helper");
 
 class LandingPage extends Helper{
@@ -10,15 +11,18 @@ class LandingPage extends Helper{
         for(let i=0; i<landingPagesData.length; i++){
             await this.setUrl(await landingPagesData[i][columnName]);
             await this.takeVisualSnapshot();
+            await this.takeHTMLSnapshot();
         };
     }
 
-    async visualTestForLandingPagesUsingPlaywright(columnName){
-        let landingPagesData = await this.readCSVFile( __dirname + "/../data/landingPagesUrls.csv");
+    async visualTestForLandingPagesUsingPlaywright(){
+        let columnName = properties.ackoLandingPageVisualTestingColumnName;
+        let landingPagesData = await this.readCSVFile( __dirname + "/../"+properties.strapiMigrationCsvFilePath);
         for(let i=0; i<landingPagesData.length; i++){
             let page = await Helper.getPage();
             await page.goto(await landingPagesData[i][columnName]);
             await this.takeVisualSnapshot();
+            await this.takeHTMLSnapshot();
         }
     }
 

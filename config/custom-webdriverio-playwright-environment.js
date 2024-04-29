@@ -1,5 +1,4 @@
 const { default: NodeEnvironment } = require('jest-environment-node');
-const Context = require('../utils/context');
 
 class CustomEnvironment extends NodeEnvironment {
   async setup() {

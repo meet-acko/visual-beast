@@ -6,11 +6,13 @@ const { properties } = require("./config");
 const { parse } = require('csv-parse');
 const stringify = require('csv-stringify');
 const SoftAssert = require("./softAssert");
+const cheerio = require('cheerio');
+
 let driver;
+let softAssert = new SoftAssert();
 
 exports.Helper = class Helper{
     static page;
-    static softAssert = new SoftAssert();
 
     constructor(file){
         if(file){
@@ -41,7 +43,7 @@ exports.Helper = class Helper{
     }
 
     static async verifySoftAssert(){
-        await Helper.softAssert.verify();
+        await softAssert.verify();
     }
 
     async sleep(second) {
@@ -290,7 +292,27 @@ exports.Helper = class Helper{
             image = await this.takeFullPageScreenshot();
         else if(properties.driverType == "playwright")
             image = await this.takeFullPagePlaywrightScreenshot();
-        await Helper.softAssert.assertImage(await image);
+        await softAssert.assertImage(await image);
+    }
+
+    async takeHTMLSnapshot(){
+        let $;
+        if(properties.driverType == "webdriverio"){
+            $ = await cheerio.load(await driver.getPageSource());
+        }else{
+            $ = await cheerio.load(await (await Helper.getPage()).content());
+        }
+        // removing all unwanted html code
+        await $('script').remove(); 
+        await $('[src]').removeAttr('src');
+        await $('style').remove();
+        await $('noscript').remove();
+        await $('[class]').removeAttr('class');
+        await $('[id]').removeAttr('id');
+        // await $('div').remove();
+        // await softAssert.assertHTML(
+          return  (await $.html()).replace(/\s+/g, ' ').trim().replace(/>(?=<)/g, '>\n')
+        // );
     }
 
     async scrollToBottomOfWebPage(){

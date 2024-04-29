@@ -1,10 +1,8 @@
 const playwright = require('@playwright/test');
 
 class SoftAssert {
-    constructor() {
-        this.errors = [];
-        this.errorMap = {};
-    }
+    errors = [];
+    errorMap = {};
 
     async assert(condition, message) {
         try {
@@ -18,6 +16,16 @@ class SoftAssert {
     async assertImage(image) {
         try {
             await expect(await image).toMatchImageSnapshot();
+        } catch (error) {
+            this.errorMap[await global.currentTestCaseName] = await error;
+            await this.errors.push(await this.errorMap);
+            this.errorMap = {};
+        }
+    }
+
+    async assertHTML(pageSource){
+        try {
+            await expect(await pageSource).toMatchSnapshot();
         } catch (error) {
             this.errorMap[await global.currentTestCaseName] = await error;
             await this.errors.push(await this.errorMap);
