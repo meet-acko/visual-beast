@@ -2,7 +2,6 @@ const { toMatchImageSnapshot } = require('jest-image-snapshot');
 const { properties } = require('../utils/config');
 const { getDriver, closeDriver } = require('../utils/driverSetUp');
 const { Helper } = require('../utils/helper');
-let driver;
 
 expect.extend({ 
     toMatchImageSnapshot(received, options) {
@@ -21,17 +20,17 @@ beforeEach(async () => {
     if(properties.configType == "web"){
         switch (properties.driverType) {
             case "playwright" : {
-                driver = await getDriver();
-                await Helper.setDriver(await driver);
-                let page = await driver.newPage()
-                await page.setDefaultTimeout(3*60*60*1000);
-                await Helper.setPage(await page);
+                global.driver = await getDriver();
+                await Helper.setDriver(await global.driver);
+                global.page = await global.driver.newPage()
+                await global.page.setDefaultTimeout(3*60*60*1000);
+                await Helper.setPage(await global.page);
                 break;
             }
             case "webdriverio" : {
-                driver = await getDriver();
-                await Helper.setDriver(await driver);
-                await driver.url("https://www.ackodev.com/");
+                global.driver = await getDriver();
+                await Helper.setDriver(await global.driver);
+                await global.driver.url("https://www.ackodev.com/");
                 break;
             }
         }
