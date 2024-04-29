@@ -21,15 +21,12 @@ beforeEach(async () => {
         switch (properties.driverType) {
             case "playwright" : {
                 global.driver = await getDriver();
-                await Helper.setDriver(await global.driver);
                 global.page = await global.driver.newPage()
                 await global.page.setDefaultTimeout(3*60*60*1000);
-                await Helper.setPage(await global.page);
                 break;
             }
             case "webdriverio" : {
                 global.driver = await getDriver();
-                await Helper.setDriver(await global.driver);
                 await global.driver.url("https://www.ackodev.com/");
                 break;
             }
@@ -42,6 +39,6 @@ afterAll(async () => {
 });
 
 afterEach(async () => {
-    await closeDriver(await Helper.getDriver());
+    await closeDriver(await global.driver);
     await Helper.verifySoftAssert();
 });

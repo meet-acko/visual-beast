@@ -8,12 +8,9 @@ const stringify = require('csv-stringify');
 const SoftAssert = require("./softAssert");
 const cheerio = require('cheerio');
 
-let driver;
 let softAssert = new SoftAssert();
 
 exports.Helper = class Helper{
-    static page;
-
     constructor(file){
         if(file){
             if(file.includes("\\pages\\")){
@@ -25,23 +22,6 @@ exports.Helper = class Helper{
         console.log(this.file);
         this.request = request;
     }
-
-    static async setDriver(driverToBeSet){
-        driver = await driverToBeSet;
-    }
-
-    static async getDriver(){
-        return await driver;
-    }
-
-    static async setPage(pageToBeSet){
-        this.page = await pageToBeSet;
-    }
-
-    static async getPage(){
-        return await this.page;
-    }
-
     static async verifySoftAssert(){
         await softAssert.verify();
     }
@@ -246,6 +226,8 @@ exports.Helper = class Helper{
                     setTimeout(scrollDown, scrollDelay);
                 } else {
                     window.scrollTo(0, totalHeight);
+                    setTimeout(()=>{}, 50);
+                    window.scrollTo(0, 0);
                 }
             }
             scrollDown();
@@ -262,8 +244,7 @@ exports.Helper = class Helper{
     }
 
     async takeFullPagePlaywrightScreenshot(){
-        let pageObj = await Helper.getPage();
-        await pageObj.evaluate(() => {
+        await page.evaluate(() => {
             const totalHeight = document.body.scrollHeight;
             let currentScroll = window.scrollY || window.pageYOffset;
             const scrollStep = 50;
@@ -276,15 +257,18 @@ exports.Helper = class Helper{
                     setTimeout(scrollDown, scrollDelay);
                 } else {
                     window.scrollTo(0, totalHeight);
+                    setTimeout(()=>{}, 50);
+                    window.scrollTo(0, 0);
                 }
             }
             scrollDown();
         })
         
-        let bodyHeight = await pageObj.evaluate(()=>{return document.body.scrollHeight});
+        let bodyHeight = await page.evaluate(()=>{return document.body.scrollHeight});
         await this.sleep((await bodyHeight)/2000);
-        await pageObj.waitForLoadState('networkidle');
-        return await pageObj.screenshot({ fullPage: true });
+        await this.sleep(2);
+        await page.waitForLoadState('networkidle');
+        return await page.screenshot({ fullPage: true });
     }
 
     async takeVisualSnapshot(){
@@ -301,7 +285,8 @@ exports.Helper = class Helper{
         if(properties.driverType == "webdriverio"){
             $ = await cheerio.load(await driver.getPageSource());
         }else{
-            $ = await cheerio.load(await (await Helper.getPage()).content());
+            await page.waitForLoadState('networkidle');
+            $ = await cheerio.load(await page.content());
         }
         // removing all unwanted html code
         await $('script').remove(); 
@@ -310,9 +295,26 @@ exports.Helper = class Helper{
         await $('noscript').remove();
         await $('[class]').removeAttr('class');
         await $('[id]').removeAttr('id');
+        await $('div').each(async function () {
+            const attributes = Object.keys(this.attribs);
+            // Check if any attribute starts with 'data-gtm-'
+            const hasDataGtmAttribute = attributes.some(attr => attr.startsWith('data-gtm-'));
+            if (hasDataGtmAttribute) {
+            //   await $(this).remove(); // Remove the element from the DOM
+
+              const element = await $(this);
+                // Iterate over each attribute in the element
+                Object.keys(element.attr()).forEach(attr => {
+                    // Check if the attribute starts with 'data-gtm-'
+                    if (attr.startsWith('data-gtm-')) {
+                        element.removeAttr(attr);
+                    }
+                });
+            }
+          });
         // await $('div').remove();
         await softAssert.assertHTML(
-          (await $.html()).replace(/\s+/g, ' ').trim().replace(/>(?=<)/g, '>\n')
+          (await $.html()).replace(/\n/g, '').replace(/\s+/g, ' ').replace(/>/g, '>\n').replace(/ </g, '<')
         );
     }
 

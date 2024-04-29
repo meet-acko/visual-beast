@@ -11,17 +11,26 @@ class LandingPage extends Helper{
         for(let i=0; i<landingPagesData.length; i++){
             await this.setUrl(await landingPagesData[i][columnName]);
             await this.takeVisualSnapshot();
-            await this.takeHTMLSnapshot();
         };
     }
 
-    async visualTestForLandingPagesUsingPlaywright(){
+    async visualTestForLandingPages(){
         let columnName = properties.ackoLandingPageVisualTestingColumnName;
         let landingPagesData = await this.readCSVFile( __dirname + "/../"+properties.strapiMigrationCsvFilePath);
         for(let i=0; i<landingPagesData.length; i++){
-            let page = await Helper.getPage();
+            // let page = await Helper.getPage();
             await page.goto(await landingPagesData[i][columnName]);
-            await this.takeVisualSnapshot();
+            await this.sleep(2);
+            await this.takeHTMLSnapshot();
+        }
+    }
+
+    async htmlSnapshotTestForLandingPages(){
+        let columnName = properties.ackoLandingPageVisualTestingColumnName;
+        let landingPagesData = await this.readCSVFile( __dirname + "/../"+properties.strapiMigrationCsvFilePath);
+        for(let i=0; i<landingPagesData.length; i++){
+            // let page = await Helper.getPage();
+            await page.goto(await landingPagesData[i][columnName]);
             await this.takeHTMLSnapshot();
         }
     }
@@ -50,6 +59,8 @@ class LandingPage extends Helper{
                     setTimeout(scrollDown, scrollDelay);
                 } else {
                     window.scrollTo(0, totalHeight);
+                    setTimeout(()=>{}, 50);
+                    window.scrollTo(0, 0);
                 }
             }
             scrollDown();

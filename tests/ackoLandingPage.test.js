@@ -6,7 +6,11 @@ const pages = {
 
 describe('Ackodev visual testing', () => {
 
-    it('all landing pages visual testing from csv reading using playwright', async () => {
-        await pages.landingPage.visualTestForLandingPagesUsingPlaywright("Acko URLs");
+    it('all landing pages visual testing from csv reading', async () => {
+        await pages.landingPage.visualTestForLandingPages();
+    });
+
+    it('all landing pages html snapshot testing from csv reading', async () => {
+        await pages.landingPage.htmlSnapshotTestForLandingPages();
     });
 });
