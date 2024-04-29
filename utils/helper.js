@@ -300,8 +300,6 @@ exports.Helper = class Helper{
             // Check if any attribute starts with 'data-gtm-'
             const hasDataGtmAttribute = attributes.some(attr => attr.startsWith('data-gtm-'));
             if (hasDataGtmAttribute) {
-            //   await $(this).remove(); // Remove the element from the DOM
-
               const element = await $(this);
                 // Iterate over each attribute in the element
                 Object.keys(element.attr()).forEach(attr => {
@@ -311,8 +309,68 @@ exports.Helper = class Helper{
                     }
                 });
             }
-          });
-        // await $('div').remove();
+        });
+
+        await $('a').each(async function () {
+            const attributes = Object.keys(this.attribs);
+            const hasDataGtmAttribute = attributes.some(attr => attr.startsWith('href'));
+            if (hasDataGtmAttribute) {
+              const element = await $(this);
+                // Iterate over each attribute in the element
+                Object.keys(element.attr()).forEach(attr => {
+                    if (attr.startsWith('href')) {
+                        element.removeAttr(attr);
+                    }
+                });
+            }
+        });
+
+        await $('img').each(async function () {
+            const attributes = Object.keys(this.attribs);
+            const hasDataGtmAttribute = attributes.some(attr => attr.startsWith('srcset'));
+            if (hasDataGtmAttribute) {
+              const element = await $(this);
+                // Iterate over each attribute in the element
+                Object.keys(element.attr()).forEach(attr => {
+                    if (attr.startsWith('srcset')) {
+                        element.removeAttr(attr);
+                    }
+                });
+            }
+        });
+
+        await $('link').each(async function () {
+            const attributes = Object.keys(this.attribs);
+            const hasDataGtmAttribute = attributes.some(attr => attr.startsWith('href'));
+            
+            if (hasDataGtmAttribute) {
+              const element = await $(this);
+                // Iterate over each attribute in the element
+                Object.keys(element.attr()).forEach(attr => {
+                    if (attr.startsWith('href')) {
+                        element.removeAttr(attr);
+                    }
+                });
+            }
+            const hasImageSecretAttribute = attributes.some(attr => attr.startsWith('imagesrcset'));
+            if (hasImageSecretAttribute) {
+                const element = await $(this);
+                  // Iterate over each attribute in the element
+                  Object.keys(element.attr()).forEach(attr => {
+                      if (attr.startsWith('imagesrcset')) {
+                          element.removeAttr(attr);
+                      }
+                  });
+              }
+        });
+
+        $('p').each((index, element) => {
+            const $element = $(element);
+            if (!$element.html().trim()) {
+                $element.remove();
+            }
+        });
+        
         await softAssert.assertHTML(
           (await $.html()).replace(/\n/g, '').replace(/\s+/g, ' ').replace(/>/g, '>\n').replace(/ </g, '<')
         );
