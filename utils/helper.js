@@ -310,9 +310,9 @@ exports.Helper = class Helper{
         await $('[class]').removeAttr('class');
         await $('[id]').removeAttr('id');
         // await $('div').remove();
-        // await softAssert.assertHTML(
-          return  (await $.html()).replace(/\s+/g, ' ').trim().replace(/>(?=<)/g, '>\n')
-        // );
+        await softAssert.assertHTML(
+          (await $.html()).replace(/\s+/g, ' ').trim().replace(/>(?=<)/g, '>\n')
+        );
     }
 
     async scrollToBottomOfWebPage(){
