@@ -21,7 +21,7 @@ class LandingPage extends Helper{
             // let page = await Helper.getPage();
             await page.goto(await landingPagesData[i][columnName]);
             await this.sleep(2);
-            await this.takeHTMLSnapshot();
+            await this.takeVisualSnapshot();
         }
     }
 
