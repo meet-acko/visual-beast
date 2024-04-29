@@ -7,7 +7,7 @@ class LandingPage extends Helper{
     }
 
     async visualTestForLandingPages(columnName){
-        let landingPagesData = await this.readCSVFile( __dirname + "/../data/landingPagesUrls.csv");
+        let landingPagesData = await this.readCSVFile( __dirname + "/../data/demoUrls.csv");
         for(let i=0; i<landingPagesData.length; i++){
             await this.setUrl(await landingPagesData[i][columnName]);
             await this.takeVisualSnapshot();
