@@ -21,7 +21,7 @@ class LandingPage extends Helper{
             // let page = await Helper.getPage();
             await page.goto(await landingPagesData[i][columnName]);
             await this.sleep(2);
-            await this.takeHTMLSnapshot();
+            await this.takeVisualSnapshot();
         }
     }
 
@@ -31,7 +31,24 @@ class LandingPage extends Helper{
         for(let i=0; i<landingPagesData.length; i++){
             // let page = await Helper.getPage();
             await page.goto(await landingPagesData[i][columnName]);
+            let xpathRemoveArr = (await landingPagesData[i]['Xpath to be removed']).split('|').map(item => item.trim());
+            for(let j=0; j<xpathRemoveArr.length; j++){
+                await this.removeXpathFromDom(await xpathRemoveArr[j]);
+            }
+            await this.sleep(1);
             await this.takeHTMLSnapshot();
+        }
+    }
+
+    async removeXpathFromDom(xpath){
+        if(await xpath){
+            await page.evaluate((xpath) => {
+                const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                if (element) {
+                    element.remove();
+                }
+                return element;
+            }, xpath);
         }
     }
 

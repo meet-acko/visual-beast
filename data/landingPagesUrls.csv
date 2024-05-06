@@ -1,6 +1,6 @@
-Ackodev URLs,Acko URLs
-https://www.ackodev.com/two-wheeler-insurance/,https://www.acko.com/two-wheeler-insurance/
-https://www.ackodev.com/car-insurance/,https://www.acko.com/car-insurance/
-https://www.acko.com/motor-insurance/,https://central-acko-seo-strapi.internal.live.acko.com/product/motor-insurance/
-https://www.acko.com/group-health-insurance/,https://central-acko-seo-strapi.internal.live.acko.com/product/group-health-insurance/
-https://www.acko.com/car-insurance/bmw/,https://central-acko-seo-strapi.internal.live.acko.com/product/car-insurance/bmw/
+Baseline URLs,AckoStrapi URLs,Xpath to be removed
+https://www.acko.com/two-wheeler-insurance/,https://central-acko-seo-strapi.internal.live.acko.com/product/two-wheeler-insurance/,(//h4[text()='Explore More on Bike Insurance']/../../div)[2]|(//h4[text()='Bike Insurance for Popular Brands']/../../div)[2]
+https://www.acko.com/car-insurance/,https://central-acko-seo-strapi.internal.live.acko.com/product/car-insurance/,(//h4[text()='Explore More on Car Insurance']/../../div)[2]|(//h4[text()='Car Insurance for Popular Brands']/../../div)[2]
+https://www.acko.com/motor-insurance/,https://central-acko-seo-strapi.internal.live.acko.com/product/motor-insurance/,(//h4[text()='Explore More on Car Insurance']/../../div)[2]|(//h4[text()='Car Insurance for Popular Brands']/../../div)[2]|(//h4[text()='Explore More on Bike Insurance']/../../div)[2]|(//h4[text()='Bike Insurance for Popular Brands']/../../div)[2]
+https://www.acko.com/group-health-insurance/,https://central-acko-seo-strapi.internal.live.acko.com/product/group-health-insurance/,(//h4[text()='Explore Health Insurance in Other Cities']/../../div)[2]|(//h4[text()='Best Health Insurance Plans']/../../div)[2]|(//h4[text()='Best Family Health Insurance Plans']/../../div)[2]|(//h4[text()='Health Insurance Term Plans']/../../div)[2]|(//h4[text()='Health Insurance Comparisons']/../../div)[2]|(//h4[text()='Health Insurance Riders']/../../div)[2]|(//h4[text()='Group Health Insurance Plans']/../../div)[2]
+https://www.acko.com/car-insurance/bmw/,https://central-acko-seo-strapi.internal.live.acko.com/product/car-insurance/bmw/,(//h4[text()='Car Insurance for Popular Brands']/../../div)[2]|(//h4[text()='Other Car Insurance Products']/../../div)[2]
