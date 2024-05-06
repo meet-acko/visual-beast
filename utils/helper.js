@@ -64,6 +64,41 @@ exports.Helper = class Helper{
         return element;
     }
 
+    async sendKeys(value){
+        switch(properties.configType){
+            case "web":
+                return await driver.keys("" + value);
+            case "mweb":
+                return await driver.keys("" + value);
+            case "android":
+                {
+                    switch(Helper.getCurrentContext()){
+                        case "webview":
+                            return await driver.keys("" + value);
+                        case "native":
+                            return await this.sendKeysForWebView("" + value);
+                    }
+                }
+        }
+    }
+
+    async sendKeysForWebView(value){
+        let currentContext = Helper.getCurrentContext();
+        await this.switchContext("webview");
+        if (typeof value !== 'string') {
+            value = ""+value;
+        }
+        let keyAct = await driver.action('key');
+        for(let i in [...value]){
+            console.log(await value[i]);
+            await keyAct.down(await value[i]);
+            await keyAct.up(await value[i]);
+            await keyAct.pause(500)
+        }
+        await keyAct.perform();
+        await this.switchContext(currentContext);
+    }
+
     async findWebElement(elementName, replaceWith, timeOut = 9.5, elementStatus = "clickable", returnListElements = false, refreshCount = 0){
         let resultElement;
         return await new Promise(async (resolve, reject) => {
@@ -212,6 +247,13 @@ exports.Helper = class Helper{
         }
     }
 
+    async executeJSScript(jsScript){
+        if(properties.driverType == "webdriverio")
+            await driver.executeScript(jsScript, []);
+        else if(properties.driverType == "playwright")
+            await page.evaluate(jsScript);
+    }
+
     async takeFullPageScreenshot(){
         await driver.executeScript(`function smoothScrollToBottom() {
             const totalHeight = document.body.scrollHeight;
@@ -238,7 +280,7 @@ exports.Helper = class Helper{
         await this.sleep((await bodyHeight)/2000);
         // let bodywidth = await driver.executeScript("return document.body.scrollWidth",[]);
         await driver.setWindowSize(1920, bodyHeight);
-        await driver.refresh();
+        // await driver.refresh();
         await this.sleep(2);
         return await driver.takeScreenshot();
     }
