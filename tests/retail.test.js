@@ -14,8 +14,14 @@ describe('Health retail visual testing suite', () => {
         await pages.homePage.webLoginPlaywright(mobileNumber);
     });
     
-    it.only('Health retail buy journey visual testing using webdriverio', async () => {
+    it('Health retail buy journey visual testing using webdriverio', async () => {
         let mobileNumber = pages.basePage.mobileNumber();
         await pages.homePage.webLogin(mobileNumber);
+    });
+
+    it('Life sem buy journey visual testing', async () => {
+        let mobileNumber = pages.basePage.mobileNumber();
+        await pages.homePage.goToLifeSemPage();
+        await pages.homePage.doVisualTestOfLifeSemJourney(mobileNumber);
     });
 });

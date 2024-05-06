@@ -13,6 +13,68 @@
     },
     "mobileNumberInput" : {
         "xpath" : "//*[@type='number']"
+    },
+    "nameInput" : {
+        "xpath" : "(//*[text()='Your Name']//following::input)[1]/.."
+    },
+    "maleGenderInput" : {
+        "xpath" : "//*[text()='Male']"
+    },
+    "noSmokedInput" : {
+        "xpath" : "//*[text()='No']"
+    },
+    "ageInput" : {
+        "xpath" : "(//*[text()='Your age']//following::input)[1]/.."
+    },
+    "pincodeInput" : {
+        "xpath" : "(//*[text()='Your pin code']//following::input)[1]/.."
+    },
+    "phoneNumberInput" : {
+        "xpath" : "(//*[text()='Your phone number']//following::input)[1]/.."
+    },
+    "checkPricesCTA" : {
+        "xpath" : "(//*[text()='Your pin code']//following::*[text()='Check prices'])[1]"
+    },
+    "seeBreakupLink" : {
+        "xpath" : "//*[text()='See premium breakup']"
+    },
+    "continueCTA" : {
+        "xpath" : "//*[text()='Continue']"
+    },
+    "dontWantCoverCTA" : {
+        "xpath" : "//div[contains(text(),'No, I don')]"
+    },
+    "justWantBasicCoverCTA" : {
+        "xpath" : "//div[contains(text(),'Just want basic')]"
+    },
+    
+    "twoMoreThingsText" : {
+        "xpath" : "//*[contains(text(),'Just two more things')]"
+    },
+    "lifeDOBInput" : {
+        "xpath" : "(//*[contains(text(),'Your date of')]//following::*)[1]"
+    },
+    "emailInput" : {
+        "xpath" : "(//*[contains(text(),'Your email add')]//following::input/..)[1]"
+    },
+    "reviewMyPlanCTA" : {
+        "xpath" : "(//*[contains(text(),'Review my plan')])[1]"
+    },
+    "ackoLifePlanDetails" : {
+        "xpath" : "//*[text()='ACKO Life Flexi Term Plan']"
+    },
+    
+    "datePickerYearCTA" : {
+        "xpath" : "//*[text()='$']"
+    },
+    "datePickerMonthCTA" : {
+        "xpath" : "//*[text()='$']"
+    },
+    "datePickerDayCTA" : {
+        "xpath" : "(//*[text()='$'])[1]"
+    },
+    "dontHaveAnyPolicy" : {
+        "xpath" : "//*[contains(text(),'t have any policy')]"
     }
     
 }

@@ -27,7 +27,8 @@ class HomePage extends Helper{
             let input4 = await this.findWebElement("otpInput", "4");
             await input4.setValue(otp[3]);
         }
-        await this.sleep(5);
+        await this.sleep(1);
+        await this.findWebElement("dontHaveAnyPolicy");
     }
 
     async webLoginPlaywright(mobileNumber){
@@ -48,9 +49,69 @@ class HomePage extends Helper{
             await page.locator("(//input)[3]").first().fill(otp[2]);
             await page.locator("(//input)[4]").first().fill(otp[3]);
         }
-        await this.sleep(5);
+        await this.sleep(1);
+        await this.waitForSelector("//*[contains(text(),'t have any policy')]")
     }
     
+    async goToLifeSemPage(){
+        await this.setUrl("https://www.ackodev.com/life/p/semLifeBuy");
+    }
+
+    async doVisualTestOfLifeSemJourney(mobileNumber){
+        await this.sleep(1);
+        await this.clickElement(await this.findWebElement("nameInput"));
+        await this.sendKeys("Meet Marakana");
+        await this.clickElement(await this.findWebElement("maleGenderInput"));
+        await this.clickElement(await this.findWebElement("noSmokedInput"));
+        await this.clickElement(await this.findWebElement("ageInput"));
+        await this.sendKeys("26");
+        await this.executeJSScript(`(document.evaluate("//video", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).remove()`)
+        await this.clickElement(await this.findWebElement("pincodeInput"));
+        await this.sendKeys("560068");
+        await this.takeVisualSnapshot();
+        await this.clickElement(await this.findWebElement("phoneNumberInput"));
+        await this.sendKeys(mobileNumber);
+        let checkPricesCTA = await this.findWebElement("checkPricesCTA");
+        await this.clickElement(await checkPricesCTA);
+        await this.findWebElement("seeBreakupLink");
+        await this.takeVisualSnapshot();
+        await this.clickElement(await this.findWebElement("continueCTA"));
+        let dontWantCoverCTA = await this.findWebElement("dontWantCoverCTA");
+        await this.takeVisualSnapshot();
+        await this.clickElement(await dontWantCoverCTA);
+        let justWantBasicCoverCTA = await this.findWebElement("justWantBasicCoverCTA");
+        await this.takeVisualSnapshot();
+        await this.clickElement(await justWantBasicCoverCTA);
+        await this.findWebElement("twoMoreThingsText");
+        await this.clickElement(await this.findWebElement("lifeDOBInput"));
+        await this.setDatePickerValue("15/05/1997");
+        await this.clickElement(await this.findWebElement("emailInput"));
+        await this.sendKeys("meet.marakana@acko.tech");
+        let reviewMyPlanCTA = await this.findWebElement("reviewMyPlanCTA");
+        await this.takeVisualSnapshot();
+        await this.clickElement(await reviewMyPlanCTA);
+        await this.findWebElement("ackoLifePlanDetails");
+        await this.executeJSScript(`(document.evaluate("//*[text()='${await mobileNumber}']", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).innerHTML="8980301203"`)
+        await this.takeVisualSnapshot();
+        await this.sleep(10);
+    }
+
+    async setDatePickerValue(date){
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        date = date.split("/");
+        let day = parseInt(date[0]);
+        let month = parseInt(date[1])-1;
+        let year = date[2];
+        let curMonth = months[month];
+        let datePickerYearCTA = await this.findWebElement("datePickerYearCTA", year);
+        await this.clickElement(datePickerYearCTA);
+        let datePickerMonthCTA = await this.findWebElement("datePickerMonthCTA", curMonth);
+        await this.sleep(0.2);
+        await this.clickElement(datePickerMonthCTA);
+        let datePickerDayCTA = await this.findWebElement("datePickerDayCTA", day);
+        await this.sleep(0.2);
+        await this.clickElement(datePickerDayCTA);
+    }
 }
 
 module.exports = HomePage;
